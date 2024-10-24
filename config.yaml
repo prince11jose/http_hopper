@@ -1,0 +1,13 @@
+app:
+  host: "0.0.0.0"
+  port: 8080
+
+mongodb:
+  url: "mongodb://username:password@localhost:27017"
+  database: "http_hopper"
+  collection: "destinations"
+
+logging:
+  file_path: "traffic.log"
+  rotation: "24h"  # Log rotation period (e.g., daily)
+  retention: 7     # Retain logs for 7 days

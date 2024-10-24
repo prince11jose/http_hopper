@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP Hopper Traffic Monitor</title>
+    <script>
+        function connectToTrafficStream() {
+            const socket = new WebSocket(`ws://${window.location.host}/traffic`);
+            const trafficList = document.getElementById('traffic');
+
+            socket.onmessage = function(event) {
+                const trafficEntry = document.createElement('li');
+                trafficEntry.textContent = event.data;
+                trafficList.appendChild(trafficEntry);
+            };
+
+            socket.onclose = function(event) {
+                const message = document.createElement('li');
+                message.textContent = "Disconnected from traffic stream.";
+                trafficList.appendChild(message);
+            };
+
+            socket.onerror = function(error) {
+                const message = document.createElement('li');
+                message.textContent = "Error: " + error.message;
+                trafficList.appendChild(message);
+            };
+        }
+
+        window.onload = function() {
+            connectToTrafficStream();
+        };
+    </script>
+</head>
+<body>
+    <h1>HTTP Hopper Traffic Monitor</h1>
+
+    <h2>Live Traffic Stream</h2>
+    <ul id="traffic"></ul>
+</body>
+</html>
