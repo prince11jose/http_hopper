@@ -112,6 +112,15 @@ func StreamTraffic(w http.ResponseWriter, r *http.Request) {
 	mu.Unlock()
 
 	log.Println("New WebSocket client connected")
+
+	// Keep reading from the WebSocket to prevent disconnection
+	for {
+		_, _, err := conn.ReadMessage()
+		if err != nil {
+			log.Printf("WebSocket error: %v", err)
+			break // Exit the loop and close the connection on error
+		}
+	}
 }
 
 // BroadcastTraffic sends the traffic information to all connected WebSocket clients
